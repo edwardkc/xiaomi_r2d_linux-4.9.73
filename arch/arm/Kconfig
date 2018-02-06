@@ -643,6 +643,11 @@ config ARCH_OMAP1
 	help
 	  Support for older TI OMAP1 (omap7xx, omap15xx or omap16xx)
 
+config ARCH_BRCM
+	bool "Broadcom ARM"
+	help
+	  Support for Broadcom ARM-based devices and boards.
+
 endchoice
 
 menu "Multiple platform selection"
@@ -882,6 +887,9 @@ config ARCH_STM32
 	select STM32_EXTI
 	help
 	  Support for STMicroelectronics STM32 processors.
+
+source "arch/arm/mach-brcm-hnd/Kconfig"
+source "arch/arm/plat-brcm/Kconfig"
 
 config MACH_STM32F429
 	bool "STMicrolectronics STM32F429"
@@ -1228,6 +1236,14 @@ config ARM_ERRATA_852423
 	  config option from the A12 erratum due to the way errata are checked
 	  for and handled.
 
+config BCM947XX
+	bool "Support for Broadcom BCM947XX"
+	depends on ARCH_BRCM
+
+config BCM47XX
+	bool "Support for Broadcom BCM47XX processors"
+	depends on BCM947XX
+
 endmenu
 
 source "arch/arm/common/Kconfig"
@@ -1299,9 +1315,11 @@ config HAVE_SMP
 	  The only effect of this option is to make the SMP-related
 	  options available to the user for configuration.
 
+
+
 config SMP
 	bool "Symmetric Multi-Processing"
-	depends on CPU_V6K || CPU_V7
+	depends on CPU_V6K || CPU_V7 || PLAT_MPCORE
 	depends on GENERIC_CLOCKEVENTS
 	depends on HAVE_SMP
 	depends on MMU || ARM_MPU
