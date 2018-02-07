@@ -4261,6 +4261,7 @@ out:
 
 	return err;
 }
+EXPORT_SYMBOL(otp_read_word);
 
 int
 BCMNMIATTACHFN(otp_nvread)(void *oh, char *data, uint *len)

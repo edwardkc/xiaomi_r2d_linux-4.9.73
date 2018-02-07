@@ -42,7 +42,8 @@
 #define NANDF_SMALL_BADBLOCK_POS	5
 #define NANDF_LARGE_BADBLOCK_POS	0
 
-extern int nospare;
+//extern int nospare;
+int nospare = 0;
 
 struct nandpart_timing_info {
 	const char	*name;

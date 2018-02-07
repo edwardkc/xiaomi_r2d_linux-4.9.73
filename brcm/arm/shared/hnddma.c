@@ -927,6 +927,7 @@ fail:
 	_dma_detach(di);
 	return (NULL);
 }
+EXPORT_SYMBOL(dma_attach);
 
 /** init the tx or rx descriptor */
 static INLINE void
@@ -4012,6 +4013,7 @@ BCMATTACHFN(dma_addrwidth)(si_t *sih, void *dmaregs)
 	/* Fallthru */
 	return (DMADDRWIDTH_30);
 }
+EXPORT_SYMBOL(dma_addrwidth);
 
 static int
 _dma_pktpool_set(dma_info_t *di, pktpool_t *pool)

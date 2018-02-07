@@ -143,6 +143,7 @@ static const uint32 si_power_island_test_array[] = {
 #endif /* SR_DEBUG */
 
 int do_4360_pcie2_war = 0;
+EXPORT_SYMBOL(do_4360_pcie2_war);
 
 /* global kernel resource */
 static si_info_t ksii;
@@ -195,6 +196,7 @@ BCMATTACHFN(si_attach)(uint devid, osl_t *osh, void *regs,
 
 	return (si_t *)sii;
 }
+EXPORT_SYMBOL(si_attach);
 
 
 static uint32	wd_msticks;		/* watchdog timer ticks normalized to ms */
@@ -316,6 +318,7 @@ si_ldo_war(si_t *sih, uint devid)
 
 	return TRUE;
 }
+EXPORT_SYMBOL(si_ldo_war);
 #endif /* (!_CFE_ && !_CFEZ_) || CFG_WL */
 
 static bool
@@ -1217,6 +1220,7 @@ si_gci_enable_gpio(si_t *sih, uint8 gpio, uint32 mask, uint32 value)
 	si_gpioout(sih, mask, value, GPIO_HI_PRIORITY);
 
 }
+EXPORT_SYMBOL(si_gci_enable_gpio);
 
 static const char BCMATTACHDATA(rstr_host_wake_opt)[] = "host_wake_opt";
 uint8
@@ -2286,6 +2290,7 @@ si_gci_chipcontrol(si_t *sih, uint reg, uint32 mask, uint32 val)
 	return si_corereg(sih, AOB_ENAB(sih) ? si_findcoreidx(sih, GCI_CORE_ID, 0) : SI_CC_IDX,
 			OFFSETOF(chipcregs_t, gci_chipctrl), mask, val);
 }
+EXPORT_SYMBOL(si_gci_chipcontrol);
 
 /* Read the gci chip status register indexed by 'reg' */
 uint32
@@ -2919,6 +2924,7 @@ BCMATTACHFN(si_detach)(si_t *sih)
 #endif	/* !BCMBUSTYPE || (BCMBUSTYPE == SI_BUS) */
 		MFREE(sii->osh, sii, sizeof(si_info_t));
 }
+EXPORT_SYMBOL(si_detach);
 
 void *
 si_osh(si_t *sih)
@@ -2928,6 +2934,7 @@ si_osh(si_t *sih)
 	sii = SI_INFO(sih);
 	return sii->osh;
 }
+EXPORT_SYMBOL(si_osh);
 
 void
 si_setosh(si_t *sih, osl_t *osh)
@@ -2959,6 +2966,7 @@ BCMATTACHFN(si_register_intr_callback)(si_t *sih, void *intrsoff_fn, void *intrs
 	 */
 	sii->dev_coreid = cores_info->coreid[sii->curidx];
 }
+EXPORT_SYMBOL(si_register_intr_callback);
 
 void
 BCMATTACHFN(si_deregister_intr_callback)(si_t *sih)
@@ -2970,6 +2978,7 @@ BCMATTACHFN(si_deregister_intr_callback)(si_t *sih)
 	sii->intrsrestore_fn = NULL;
 	sii->intrsenabled_fn = NULL;
 }
+EXPORT_SYMBOL(si_deregister_intr_callback);
 #endif /* (!_CFE_ && !_CFEZ_) || CFG_WL */
 
 uint
@@ -3044,6 +3053,7 @@ si_coreidx(si_t *sih)
 	sii = SI_INFO(sih);
 	return sii->curidx;
 }
+EXPORT_SYMBOL(si_coreidx);
 
 void *
 si_d11_switch_addrbase(si_t *sih, uint coreunit)
@@ -3112,6 +3122,7 @@ si_corerev(si_t *sih)
 		return 0;
 	}
 }
+EXPORT_SYMBOL(si_corerev);
 
 #if defined(BCM_BACKPLANE_TIMEOUT) && defined(BCMDBG)
 void si_setup_curmap(osl_t *osh, si_t *sih)
@@ -3259,6 +3270,7 @@ si_setcore(si_t *sih, uint coreid, uint coreunit)
 		return NULL;
 	}
 }
+EXPORT_SYMBOL(si_setcore);
 
 void *
 si_setcoreidx(si_t *sih, uint coreidx)
@@ -3301,6 +3313,7 @@ si_switch_core(si_t *sih, uint coreid, uint *origidx, uint *intr_val)
 
 	return cc;
 }
+EXPORT_SYMBOL(si_switch_core);
 
 /* restore coreidx and restore interrupt */
 void
@@ -3315,6 +3328,7 @@ si_restore_core(si_t *sih, uint coreid, uint intr_val)
 	si_setcoreidx(sih, coreid);
 	INTR_RESTORE(sii, intr_val);
 }
+EXPORT_SYMBOL(si_restore_core);
 
 int
 BCMATTACHFN(si_numaddrspaces)(si_t *sih)
@@ -3385,6 +3399,7 @@ si_core_cflags(si_t *sih, uint32 mask, uint32 val)
 		return 0;
 	}
 }
+EXPORT_SYMBOL(si_core_cflags);
 
 void
 si_core_cflags_wo(si_t *sih, uint32 mask, uint32 val)
@@ -3398,6 +3413,7 @@ si_core_cflags_wo(si_t *sih, uint32 mask, uint32 val)
 	else
 		ASSERT(0);
 }
+EXPORT_SYMBOL(si_core_cflags_wo);
 
 uint32
 si_core_sflags(si_t *sih, uint32 mask, uint32 val)
@@ -3413,6 +3429,7 @@ si_core_sflags(si_t *sih, uint32 mask, uint32 val)
 		return 0;
 	}
 }
+EXPORT_SYMBOL(si_core_sflags);
 
 bool
 si_iscoreup(si_t *sih)
@@ -3428,6 +3445,7 @@ si_iscoreup(si_t *sih)
 		return FALSE;
 	}
 }
+EXPORT_SYMBOL(si_iscoreup);
 
 uint
 si_wrapperreg(si_t *sih, uint32 offset, uint32 mask, uint32 val)
@@ -3452,6 +3470,7 @@ si_corereg(si_t *sih, uint coreidx, uint regoff, uint mask, uint val)
 		return 0;
 	}
 }
+EXPORT_SYMBOL(si_corereg);
 
 /** ILP sensitive register access needs special treatment to avoid backplane stalls */
 bool si_pmu_is_ilp_sensitive(uint32 idx, uint regoff)
@@ -3516,6 +3535,7 @@ si_core_disable(si_t *sih, uint32 bits)
 	else if (CHIPTYPE(sih->socitype) == SOCI_UBUS)
 		ub_core_disable(sih, bits);
 }
+EXPORT_SYMBOL(si_core_disable);
 
 void
 si_core_reset(si_t *sih, uint32 bits, uint32 resetbits)
@@ -3527,6 +3547,7 @@ si_core_reset(si_t *sih, uint32 bits, uint32 resetbits)
 	else if (CHIPTYPE(sih->socitype) == SOCI_UBUS)
 		ub_core_reset(sih, bits, resetbits);
 }
+EXPORT_SYMBOL(si_core_reset);
 
 /** Run bist on current core. Caller needs to take care of core-specific bist hazards */
 int
@@ -3751,6 +3772,7 @@ bool si_read_pmu_autopll(si_t *sih)
 	sii = SI_INFO(sih);
 	return (si_pmu_is_autoresetphyclk_disabled(sih, sii->osh));
 }
+EXPORT_SYMBOL(si_read_pmu_autopll);
 
 uint32
 BCMINITFN(si_clock)(si_t *sih)
@@ -3802,6 +3824,7 @@ exit:
 
 	return rate;
 }
+EXPORT_SYMBOL(si_clock);
 
 /** returns value in [Hz] units */
 static uint32
@@ -3860,6 +3883,7 @@ BCMINITFN(si_alp_clock)(si_t *sih)
 
 	return ALP_CLOCK;
 }
+EXPORT_SYMBOL(si_alp_clock);
 
 /** returns value in [Hz] units */
 uint32
@@ -3943,6 +3967,7 @@ si_watchdog(si_t *sih, uint ticks)
 		si_corereg(sih, SI_CC_IDX, OFFSETOF(chipcregs_t, watchdog), ~0, ticks);
 	}
 }
+EXPORT_SYMBOL(si_watchdog);
 
 /** trigger watchdog reset after ms milliseconds */
 void
@@ -3950,6 +3975,7 @@ si_watchdog_ms(si_t *sih, uint32 ms)
 {
 	si_watchdog(sih, wd_msticks * ms);
 }
+EXPORT_SYMBOL(si_watchdog_ms);
 
 uint32 si_watchdog_msticks(void)
 {
@@ -4360,6 +4386,7 @@ BCMINITFN(si_clkctl_init)(si_t *sih)
 	if (!fast)
 		si_setcoreidx(sih, origidx);
 }
+EXPORT_SYMBOL(si_clkctl_init);
 
 /** return the value suitable for writing to the dot11 core FAST_PWRUP_DELAY register */
 uint16
@@ -4407,6 +4434,7 @@ done:
 	}
 	return fpdelay;
 }
+EXPORT_SYMBOL(si_clkctl_fast_pwrup_delay);
 
 /** turn primary xtal and/or pll off/on */
 int
@@ -4483,6 +4511,7 @@ si_clkctl_xtal(si_t *sih, uint what, bool on)
 
 	return (0);
 }
+EXPORT_SYMBOL(si_clkctl_xtal);
 
 /**
  *  clock control policy function throught chipcommon
@@ -4508,6 +4537,7 @@ si_clkctl_cc(si_t *sih, uint mode)
 
 	return _si_clkctl_cc(sii, mode);
 }
+EXPORT_SYMBOL(si_clkctl_cc);
 
 /* clk control mechanism through chipcommon, no policy checking */
 static bool
@@ -4861,6 +4891,7 @@ si_ccreg(si_t *sih, uint32 offset, uint32 mask, uint32 val)
 
 	return reg_val;
 }
+EXPORT_SYMBOL(si_ccreg);
 
 
 #ifdef SR_DEBUG
@@ -5034,6 +5065,7 @@ si_pciereg(si_t *sih, uint32 offset, uint32 mask, uint32 val, uint type)
 
 	return pcicore_pciereg(sii->pch, offset, mask, val, type);
 }
+EXPORT_SYMBOL(si_pciereg);
 
 uint32
 si_pcieserdesreg(si_t *sih, uint32 mdioslave, uint32 offset, uint32 mask, uint32 val)
@@ -5050,6 +5082,7 @@ si_pcieserdesreg(si_t *sih, uint32 mdioslave, uint32 offset, uint32 mask, uint32
 	return pcicore_pcieserdesreg(sii->pch, mdioslave, offset, mask, val);
 
 }
+EXPORT_SYMBOL(si_pcieserdesreg);
 
 /** return TRUE if PCIE capability exists in the pci config space */
 static bool
@@ -5108,6 +5141,7 @@ si_pcmcia_init(si_t *sih)
 	OSL_PCMCIA_WRITE_ATTR(sii->osh, PCMCIA_FCR0 + PCMCIA_COR, &cor, 1);
 
 }
+EXPORT_SYMBOL(si_pcmcia_init);
 
 
 bool
@@ -5117,6 +5151,7 @@ BCMATTACHFN(si_pci_war16165)(si_t *sih)
 
 	return (PCI(sii) && (sih->buscorerev <= 10));
 }
+EXPORT_SYMBOL(si_pci_war16165);
 
 /**
  * Disable pcie_war_ovr for some platforms (sigh!)
@@ -5134,6 +5169,7 @@ si_pcie_war_ovr_update(si_t *sih, uint8 aspm)
 
 	pcie_war_ovr_aspm_update(sii->pch, aspm);
 }
+EXPORT_SYMBOL(si_pcie_war_ovr_update);
 
 void
 si_pcie_power_save_enable(si_t *sih, bool enable)
@@ -5145,6 +5181,7 @@ si_pcie_power_save_enable(si_t *sih, bool enable)
 
 	pcie_power_save_enable(sii->pch, enable);
 }
+EXPORT_SYMBOL(si_pcie_power_save_enable);
 
 void
 si_pcie_set_maxpayload_size(si_t *sih, uint16 size)
@@ -5156,6 +5193,7 @@ si_pcie_set_maxpayload_size(si_t *sih, uint16 size)
 
 	pcie_set_maxpayload_size(sii->pch, size);
 }
+EXPORT_SYMBOL(si_pcie_set_maxpayload_size);
 
 uint16
 si_pcie_get_maxpayload_size(si_t *sih)
@@ -5178,6 +5216,7 @@ si_pcie_set_request_size(si_t *sih, uint16 size)
 
 	pcie_set_request_size(sii->pch, size);
 }
+EXPORT_SYMBOL(si_pcie_set_request_size);
 
 uint16
 BCMATTACHFN(si_pcie_get_request_size)(si_t *sih)
@@ -5189,6 +5228,7 @@ BCMATTACHFN(si_pcie_get_request_size)(si_t *sih)
 
 	return pcie_get_request_size(sii->pch);
 }
+EXPORT_SYMBOL(si_pcie_get_request_size);
 
 
 uint16
@@ -5223,6 +5263,7 @@ si_pcie_configspace_cache(si_t *sih)
 
 	return pcie_configspace_cache(sii->pch);
 }
+EXPORT_SYMBOL(si_pcie_configspace_cache);
 
 int
 si_pcie_configspace_restore(si_t *sih)
@@ -5234,6 +5275,7 @@ si_pcie_configspace_restore(si_t *sih)
 
 	return pcie_configspace_restore(sii->pch);
 }
+EXPORT_SYMBOL(si_pcie_configspace_restore);
 
 int
 si_pcie_configspace_get(si_t *sih, uint8 *buf, uint size)
@@ -5292,6 +5334,7 @@ BCMINITFN(si_pci_up)(si_t *sih)
 			                    si_findcoreidx((void *)sii, D11_CORE_ID, 0));
 	}
 }
+EXPORT_SYMBOL(si_pci_up);
 
 /** Unconfigure and/or apply various WARs when system is going to sleep mode */
 void
@@ -5301,6 +5344,7 @@ BCMUNINITFN(si_pci_sleep)(si_t *sih)
 
 	pcicore_sleep(SI_INFO(sih)->pch);
 }
+EXPORT_SYMBOL(si_pci_sleep);
 
 /** Unconfigure and/or apply various WARs when going down */
 void
@@ -5325,6 +5369,7 @@ BCMINITFN(si_pci_down)(si_t *sih)
 
 	pcicore_down(sii->pch, SI_PCIDOWN);
 }
+EXPORT_SYMBOL(si_pci_down);
 
 /**
  * Configure the pci core for pci client (NIC) action
@@ -5386,6 +5431,7 @@ BCMATTACHFN(si_pci_setup)(si_t *sih, uint coremask)
 		si_setcoreidx(sih, idx);
 	}
 }
+EXPORT_SYMBOL(si_pci_setup);
 
 uint8
 si_pcieclkreq(si_t *sih, uint32 mask, uint32 val)
@@ -5397,6 +5443,7 @@ si_pcieclkreq(si_t *sih, uint32 mask, uint32 val)
 
 	return pcie_clkreq(sii->pch, mask, val);
 }
+EXPORT_SYMBOL(si_pcieclkreq);
 
 uint32
 si_pcielcreg(si_t *sih, uint32 mask, uint32 val)
@@ -5408,6 +5455,7 @@ si_pcielcreg(si_t *sih, uint32 mask, uint32 val)
 
 	return pcie_lcreg(sii->pch, mask, val);
 }
+EXPORT_SYMBOL(si_pcielcreg);
 
 uint8
 si_pcieltrenable(si_t *sih, uint32 mask, uint32 val)
@@ -5419,6 +5467,7 @@ si_pcieltrenable(si_t *sih, uint32 mask, uint32 val)
 
 	return pcie_ltrenable(sii->pch, mask, val);
 }
+EXPORT_SYMBOL(si_pcieltrenable);
 
 uint8
 BCMATTACHFN(si_pcieobffenable)(si_t *sih, uint32 mask, uint32 val)
@@ -5432,6 +5481,7 @@ BCMATTACHFN(si_pcieobffenable)(si_t *sih, uint32 mask, uint32 val)
 
 	return pcie_obffenable(sii->pch, mask, val);
 }
+EXPORT_SYMBOL(si_pcieobffenable);
 
 uint32
 si_pcieltr_reg(si_t *sih, uint32 reg, uint32 mask, uint32 val)
@@ -5487,6 +5537,8 @@ si_pcie_set_L1substate(si_t *sih, uint32 substate)
 	if (PCIE_GEN2(sii))
 		pcie_set_L1substate(sii->pch, substate);
 }
+EXPORT_SYMBOL(si_pcie_set_L1substate);
+
 #ifndef BCM_BOOTLOADER
 uint32
 si_pcie_get_L1substate(si_t *sih)
@@ -5500,6 +5552,7 @@ si_pcie_get_L1substate(si_t *sih)
 
 	return 0;
 }
+EXPORT_SYMBOL(si_pcie_get_L1substate);
 #endif /* BCM_BOOTLOADER */
 /** indirect way to read pcie config regs */
 uint
@@ -5576,6 +5629,7 @@ si_pci_fixcfg(si_t *sih)
 	pcicore_hwup(sii->pch);
 	return 0;
 } /* si_pci_fixcfg */
+EXPORT_SYMBOL(si_pci_fixcfg);
 
 #if defined(BCMDBG) || defined(WLTEST)
 int
@@ -5626,6 +5680,7 @@ si_gpiocontrol(si_t *sih, uint32 mask, uint32 val, uint8 priority)
 	regoff = OFFSETOF(chipcregs_t, gpiocontrol);
 	return (si_corereg(sih, SI_CC_IDX, regoff, mask, val));
 }
+EXPORT_SYMBOL(si_gpiocontrol);
 
 /** mask&set gpio output enable bits */
 uint32
@@ -5648,6 +5703,7 @@ si_gpioouten(si_t *sih, uint32 mask, uint32 val, uint8 priority)
 	regoff = OFFSETOF(chipcregs_t, gpioouten);
 	return (si_corereg(sih, SI_CC_IDX, regoff, mask, val));
 }
+EXPORT_SYMBOL(si_gpioouten);
 
 /** mask&set gpio output bits */
 uint32
@@ -5670,6 +5726,7 @@ si_gpioout(si_t *sih, uint32 mask, uint32 val, uint8 priority)
 	regoff = OFFSETOF(chipcregs_t, gpioout);
 	return (si_corereg(sih, SI_CC_IDX, regoff, mask, val));
 }
+EXPORT_SYMBOL(si_gpioout);
 
 //#include <linux/printk.h>
 static uint32 t_current = 0;
@@ -5828,6 +5885,8 @@ si_gpioout2(si_t *sih, uint32 mask, uint32 val, uint8 priority)
     	    return (si_corereg(gpio_sih, SI_CC_IDX, regoff, mask, val));
     	}
 }
+EXPORT_SYMBOL(si_gpioout2);
+
 uint32
 si_gpioouten2(si_t *sih, uint32 mask, uint32 val, uint8 priority)
 {
@@ -5883,6 +5942,7 @@ si_gpioouten2(si_t *sih, uint32 mask, uint32 val, uint8 priority)
 	regoff = OFFSETOF(chipcregs_t, gpioouten);
 	return (si_corereg(gpio_sih, SI_CC_IDX, regoff, mask, val));
 }
+EXPORT_SYMBOL(si_gpioouten2);
 
 /** reserve one gpio */
 uint32
@@ -5951,6 +6011,7 @@ si_gpioin(si_t *sih)
 	regoff = OFFSETOF(chipcregs_t, gpioin);
 	return (si_corereg(sih, SI_CC_IDX, regoff, 0, 0));
 }
+EXPORT_SYMBOL(si_gpioin);
 
 /* mask&set gpio interrupt polarity bits */
 uint32
@@ -6012,6 +6073,7 @@ si_gpioled(si_t *sih, uint32 mask, uint32 val)
 	/* gpio led powersave reg */
 	return (si_corereg(sih, SI_CC_IDX, OFFSETOF(chipcregs_t, gpiotimeroutmask), mask, val));
 }
+EXPORT_SYMBOL(si_gpioled);
 
 /* mask&set gpio timer val */
 uint32
@@ -6023,6 +6085,7 @@ si_gpiotimerval(si_t *sih, uint32 mask, uint32 gpiotimerval)
 	return (si_corereg(sih, SI_CC_IDX,
 		OFFSETOF(chipcregs_t, gpiotimerval), mask, gpiotimerval));
 }
+EXPORT_SYMBOL(si_gpiotimerval);
 
 uint32
 si_gpiopull(si_t *sih, bool updown, uint32 mask, uint32 val)
@@ -6035,6 +6098,7 @@ si_gpiopull(si_t *sih, bool updown, uint32 mask, uint32 val)
 	offs = (updown ? OFFSETOF(chipcregs_t, gpiopulldown) : OFFSETOF(chipcregs_t, gpiopullup));
 	return (si_corereg(sih, SI_CC_IDX, offs, mask, val));
 }
+EXPORT_SYMBOL(si_gpiopull);
 
 uint32
 si_gpioevent(si_t *sih, uint regtype, uint32 mask, uint32 val)
@@ -6906,6 +6970,7 @@ BCMINITFN(si_seci_init)(si_t *sih, uint8  seci_mode)
 
 	return ptr;
 }
+EXPORT_SYMBOL(si_seci_init);
 
 /** SECI Init routine, pass in seci_mode */
 #ifdef BCMECICOEX
@@ -7292,6 +7357,7 @@ si_btcgpiowar(si_t *sih)
 
 	INTR_RESTORE(sii, intr_val);
 }
+EXPORT_SYMBOL(si_btcgpiowar);
 
 void
 si_chipcontrl_btshd0_4331(si_t *sih, bool on)
@@ -7326,6 +7392,7 @@ si_chipcontrl_btshd0_4331(si_t *sih, bool on)
 
 	INTR_RESTORE(sii, intr_val);
 }
+EXPORT_SYMBOL(si_chipcontrl_btshd0_4331);
 
 void
 si_chipcontrl_restore(si_t *sih, uint32 val)
@@ -7385,6 +7452,7 @@ si_chipcontrl_epa4331(si_t *sih, bool on)
 
 	si_setcoreidx(sih, origidx);
 }
+EXPORT_SYMBOL(si_chipcontrl_epa4331);
 
 /** switch muxed pins, on: SROM, off: FEMCTRL. Called for a family of ac chips, not just 4360. */
 void
@@ -7411,6 +7479,8 @@ si_chipcontrl_srom4360(si_t *sih, bool on)
 
 	si_setcoreidx(sih, origidx);
 }
+EXPORT_SYMBOL(si_chipcontrl_srom4360);
+
 void
 si_chipcontrl_epa4331_wowl(si_t *sih, bool enter_wowl)
 {
@@ -7459,6 +7529,7 @@ si_pll_reset(si_t *sih)
 	INTR_RESTORE(sii, intr_val);
 	return (err);
 }
+EXPORT_SYMBOL(si_pll_reset);
 
 /** Enable BT-COEX & Ex-PA for 4313 */
 void
@@ -7476,6 +7547,7 @@ si_epa_4313war(si_t *sih)
 
 	si_setcoreidx(sih, origidx);
 }
+EXPORT_SYMBOL(si_epa_4313war);
 
 void
 si_clk_pmu_htavail_set(si_t *sih, bool set_clear)
@@ -7484,6 +7556,7 @@ si_clk_pmu_htavail_set(si_t *sih, bool set_clear)
 
 	si_pmu_minresmask_htavail_set(sih, sii->osh, set_clear);
 }
+EXPORT_SYMBOL(si_clk_pmu_htavail_set);
 
 void
 si_pmu_avb_clk_set(si_t *sih, osl_t *osh, bool set_flag)
@@ -7506,6 +7579,7 @@ si_pmu_synth_pwrsw_4313_war(si_t *sih)
 	if (!(*(uint32 *)PMUREG(sih, min_res_mask) & PMURES_BIT(RES4313_SYNTH_PWRSW_RSRC)))
 		OR_REG(sii->osh, PMUREG(sih, min_res_mask), PMURES_BIT(RES4313_SYNTH_PWRSW_RSRC));
 }
+EXPORT_SYMBOL(si_pmu_synth_pwrsw_4313_war);
 
 /** WL/BT control for 4313 btcombo boards >= P250 */
 void
@@ -7524,6 +7598,8 @@ si_btcombo_p250_4313_war(si_t *sih)
 
 	si_setcoreidx(sih, origidx);
 }
+EXPORT_SYMBOL(si_btcombo_p250_4313_war);
+
 void
 si_btc_enable_chipcontrol(si_t *sih)
 {
@@ -7539,6 +7615,8 @@ si_btc_enable_chipcontrol(si_t *sih)
 
 	si_setcoreidx(sih, origidx);
 }
+EXPORT_SYMBOL(si_btc_enable_chipcontrol);
+
 void
 si_btcombo_43228_war(si_t *sih)
 {
@@ -7553,6 +7631,7 @@ si_btcombo_43228_war(si_t *sih)
 
 	si_setcoreidx(sih, origidx);
 }
+EXPORT_SYMBOL(si_btcombo_43228_war);
 
 /** check if the device is removed */
 bool
@@ -7570,6 +7649,7 @@ si_deviceremoved(si_t *sih)
 	}
 	return FALSE;
 }
+EXPORT_SYMBOL(si_deviceremoved);
 
 bool
 si_is_sprom_available(si_t *sih)
@@ -7662,6 +7742,7 @@ si_is_sprom_available(si_t *sih)
 		return TRUE;
 	}
 }
+EXPORT_SYMBOL(si_is_sprom_available);
 
 bool
 si_is_otp_disabled(si_t *sih)
@@ -7763,6 +7844,7 @@ BCMATTACHFN(si_is_sprom_enabled)(si_t *sih)
 		return si_pmu_is_sprom_enabled(sih, si_osh(sih));
 	return TRUE;
 }
+EXPORT_SYMBOL(si_is_sprom_enabled);
 
 void
 #if defined(BCMDBG) || defined(WLTEST) || defined(BCMDBG_ERR)
@@ -7774,6 +7856,7 @@ BCMATTACHFN(si_sprom_enable)(si_t *sih, bool enable)
 	if (PMUCTL_ENAB(sih))
 		si_pmu_sprom_enable(sih, si_osh(sih), enable);
 }
+EXPORT_SYMBOL(si_sprom_enable);
 
 /* Return BCME_NOTFOUND if the card doesn't have CIS format nvram */
 int
@@ -7968,6 +8051,7 @@ BCMINITFN(si_otp_fabid)(si_t *sih, uint16 *fabid, bool rw)
 
 	return error;
 }
+EXPORT_SYMBOL(si_otp_fabid);
 
 uint16 BCMATTACHFN(si_fabid)(si_t *sih)
 {
@@ -8024,6 +8108,7 @@ uint16 BCMATTACHFN(si_fabid)(si_t *sih)
 
 	return fabid;
 }
+EXPORT_SYMBOL(si_fabid);
 
 uint32 BCMATTACHFN(si_get_sromctl)(si_t *sih)
 {
@@ -8041,6 +8126,7 @@ uint32 BCMATTACHFN(si_get_sromctl)(si_t *sih)
 	si_setcoreidx(sih, origidx);
 	return sromctl;
 }
+EXPORT_SYMBOL(si_get_sromctl);
 
 int BCMATTACHFN(si_set_sromctl)(si_t *sih, uint32 value)
 {
@@ -8062,6 +8148,7 @@ int BCMATTACHFN(si_set_sromctl)(si_t *sih, uint32 value)
 	return BCME_OK;
 
 }
+EXPORT_SYMBOL(si_set_sromctl);
 
 uint
 si_core_wrapperreg(si_t *sih, uint32 coreidx, uint32 offset, uint32 mask, uint32 val)
@@ -8143,6 +8230,7 @@ si_update_masks(si_t *sih)
 	break;
 	}
 }
+EXPORT_SYMBOL(si_update_masks);
 
 void
 si_force_islanding(si_t *sih, bool enable)
@@ -8186,6 +8274,7 @@ si_force_islanding(si_t *sih, bool enable)
 	break;
 	}
 }
+EXPORT_SYMBOL(si_force_islanding);
 #endif /* WLC_LOW */
 
 /* cleanup the timer from the host when ARM is been halted
@@ -8225,6 +8314,7 @@ si_pmu_rfldo(si_t *sih, bool on)
 	break;
 	}
 }
+EXPORT_SYMBOL(si_pmu_rfldo);
 
 uint32
 si_pcie_set_ctrlreg(si_t *sih, uint32 mask, uint32 val)
@@ -8240,6 +8330,7 @@ si_pcie_set_ctrlreg(si_t *sih, uint32 mask, uint32 val)
 
 	return pcie_set_ctrlreg(sii->pch, mask, val);
 }
+EXPORT_SYMBOL(si_pcie_set_ctrlreg);
 
 #ifdef SURVIVE_PERST_ENAB
 static uint32
@@ -8321,6 +8412,7 @@ si_pcie_ltr_war(si_t *sih)
 	if (PCIE_GEN2(sii))
 		pcie_ltr_war(sii->pch, si_pcieltrenable(sih, 0, 0));
 }
+EXPORT_SYMBOL(si_pcie_ltr_war);
 
 void
 si_pcie_hw_LTR_war(si_t *sih)
@@ -8330,6 +8422,7 @@ si_pcie_hw_LTR_war(si_t *sih)
 	if (PCIE_GEN2(sii))
 		pcie_hw_LTR_war(sii->pch);
 }
+EXPORT_SYMBOL(si_pcie_hw_LTR_war);
 
 void
 si_pciedev_reg_pm_clk_period(si_t *sih)
@@ -8339,6 +8432,7 @@ si_pciedev_reg_pm_clk_period(si_t *sih)
 	if (PCIE_GEN2(sii))
 		pciedev_reg_pm_clk_period(sii->pch);
 }
+EXPORT_SYMBOL(si_pciedev_reg_pm_clk_period);
 
 void
 si_pciedev_crwlpciegen2(si_t *sih)
@@ -8348,6 +8442,7 @@ si_pciedev_crwlpciegen2(si_t *sih)
 	if (PCIE_GEN2(sii))
 		pciedev_crwlpciegen2(sii->pch);
 }
+EXPORT_SYMBOL(si_pciedev_crwlpciegen2);
 
 void
 si_pcie_prep_D3(si_t *sih, bool enter_D3)
@@ -8571,6 +8666,7 @@ si_lowpwr_opt(si_t *sih)
 		si_setcoreidx(sih, origidx);
 	}
 }
+EXPORT_SYMBOL(si_lowpwr_opt);
 #endif /* WLC_LOW */
 
 void

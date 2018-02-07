@@ -77,6 +77,7 @@ pktq_penq(struct pktq *pq, int prec, void *p)
 
 	return p;
 }
+EXPORT_SYMBOL(pktq_penq);
 
 void * BCMFASTPATH BCMSPEEDOPT
 pktq_penq_head(struct pktq *pq, int prec, void *p)
@@ -113,6 +114,7 @@ pktq_penq_head(struct pktq *pq, int prec, void *p)
 
 	return p;
 }
+EXPORT_SYMBOL(pktq_penq_head);
 
 /*
  * Append spktq 'list' to the tail of pktq 'pq'
@@ -252,6 +254,7 @@ done:
 
 	return p;
 }
+EXPORT_SYMBOL(pktq_pdeq);
 
 void * BCMFASTPATH
 pktq_pdeq_prev(struct pktq *pq, int prec, void *prev_p)
@@ -287,6 +290,7 @@ done:
 
 	return p;
 }
+EXPORT_SYMBOL(pktq_pdeq_prev);
 
 void * BCMFASTPATH
 pktq_pdeq_with_fn(struct pktq *pq, int prec, ifpkt_cb_t fn, int arg)
@@ -376,6 +380,7 @@ done:
 
 	return p;
 }
+EXPORT_SYMBOL(pktq_pdeq_tail);
 
 void
 pktq_pflush(osl_t *osh, struct pktq *pq, int prec, bool dir, ifpkt_cb_t fn, int arg)
@@ -416,6 +421,7 @@ pktq_pflush(osl_t *osh, struct pktq *pq, int prec, bool dir, ifpkt_cb_t fn, int 
 	if (HND_PKTQ_MUTEX_RELEASE(&pq->mutex) != OSL_EXT_SUCCESS)
 		return;
 }
+EXPORT_SYMBOL(pktq_pflush);
 
 bool BCMFASTPATH
 pktq_pdel(struct pktq *pq, void *pktbuf, int prec)
@@ -485,6 +491,7 @@ pktq_init(struct pktq *pq, int num_prec, int max_len)
 
 	return TRUE;
 }
+EXPORT_SYMBOL(pktq_init);
 
 bool
 pktq_deinit(struct pktq *pq)
@@ -511,6 +518,7 @@ pktq_set_max_plen(struct pktq *pq, int prec, int max_len)
 	if (HND_PKTQ_MUTEX_RELEASE(&pq->mutex) != OSL_EXT_SUCCESS)
 		return;
 }
+EXPORT_SYMBOL(pktq_set_max_plen);
 
 void * BCMFASTPATH
 pktq_deq(struct pktq *pq, int *prec_out)
@@ -553,6 +561,7 @@ done:
 
 	return p;
 }
+EXPORT_SYMBOL(pktq_deq);
 
 void * BCMFASTPATH
 pktq_deq_tail(struct pktq *pq, int *prec_out)
@@ -661,6 +670,7 @@ done:
 
 	return p;
 }
+EXPORT_SYMBOL(pktq_peek_tail);
 
 void
 pktq_flush(osl_t *osh, struct pktq *pq, bool dir, ifpkt_cb_t fn, int arg)
@@ -687,6 +697,7 @@ done:
 	if (HND_PKTQ_MUTEX_RELEASE(&pq->mutex) != OSL_EXT_SUCCESS)
 		return;
 }
+EXPORT_SYMBOL(pktq_flush);
 
 /* Return sum of lengths of a specific set of precedences */
 int
@@ -710,6 +721,7 @@ pktq_mlen(struct pktq *pq, uint prec_bmp)
 
 	return len;
 }
+EXPORT_SYMBOL(pktq_mlen);
 
 /* Priority dequeue from a specific set of precedences */
 void * BCMFASTPATH BCMSPEEDOPT
@@ -757,6 +769,7 @@ done:
 
 	return p;
 }
+EXPORT_SYMBOL(pktq_mdeq);
 
 /* Priority peek from a specific set of precedences */
 void * BCMFASTPATH

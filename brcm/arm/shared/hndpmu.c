@@ -173,6 +173,7 @@ si_pmu_chipcontrol(si_t *sih, uint reg, uint32 mask, uint32 val)
 	pmu_corereg(sih, SI_CC_IDX, chipcontrol_addr, ~0, reg);
 	return pmu_corereg(sih, SI_CC_IDX, chipcontrol_data, mask, val);
 }
+EXPORT_SYMBOL(si_pmu_chipcontrol);
 
 /** Read/write a regcontrol reg */
 uint32
@@ -181,6 +182,7 @@ si_pmu_regcontrol(si_t *sih, uint reg, uint32 mask, uint32 val)
 	pmu_corereg(sih, SI_CC_IDX, regcontrol_addr, ~0, reg);
 	return pmu_corereg(sih, SI_CC_IDX, regcontrol_data, mask, val);
 }
+EXPORT_SYMBOL(si_pmu_regcontrol);
 
 /** Read/write a pllcontrol reg */
 uint32
@@ -189,6 +191,7 @@ si_pmu_pllcontrol(si_t *sih, uint reg, uint32 mask, uint32 val)
 	pmu_corereg(sih, SI_CC_IDX, pllcontrol_addr, ~0, reg);
 	return pmu_corereg(sih, SI_CC_IDX, pllcontrol_data, mask, val);
 }
+EXPORT_SYMBOL(si_pmu_pllcontrol);
 
 /**
  * The chip has one or more PLLs/FLLs (e.g. baseband PLL, USB PHY PLL). The settings of each PLL are
@@ -207,6 +210,7 @@ si_pmu_pllupd(si_t *sih)
 	pmu_corereg(sih, SI_CC_IDX, pmucontrol,
 	           PCTL_PLL_PLLCTL_UPD, PCTL_PLL_PLLCTL_UPD);
 }
+EXPORT_SYMBOL(si_pmu_pllupd);
 
 /**
 * For each chip, location of resource bits (e.g., ht bit) in resource mask registers may differ.
@@ -799,6 +803,7 @@ BCMATTACHFN(si_pmu_set_ldo_voltage)(si_t *sih, osl_t *osh, uint8 ldo, uint8 volt
 		si_pmu_regcontrol(sih, addr2, mask2 >> rshift2, (voltage & mask2) >> rshift2);
 	}
 } /* si_pmu_set_ldo_voltage */
+EXPORT_SYMBOL(si_pmu_set_ldo_voltage);
 
 void
 si_pmu_paref_ldo_enable(si_t *sih, osl_t *osh, bool enable)
@@ -826,6 +831,7 @@ si_pmu_paref_ldo_enable(si_t *sih, osl_t *osh, bool enable)
 	pmu_corereg(sih, SI_CC_IDX, min_res_mask,
 	           PMURES_BIT(ldo), enable ? PMURES_BIT(ldo) : 0);
 }
+EXPORT_SYMBOL(si_pmu_paref_ldo_enable);
 
 /* d11 slow to fast clock transition time in slow clock cycles */
 #define D11SCC_SLOW2FAST_TRANSITION	2
@@ -3787,6 +3793,7 @@ BCMATTACHFN(si_pmu_res_init)(si_t *sih, osl_t *osh)
 	si_setcoreidx(sih, origidx);
 #endif /* !_CFE_ && !_CFEZ_ */
 } /* si_pmu_res_init */
+EXPORT_SYMBOL(si_pmu_res_init);
 
 /* setup pll and query clock speed */
 typedef struct {
@@ -6790,6 +6797,7 @@ si_mac_clk(si_t *sih, osl_t *osh)
 
 	return mac_clk;
 } /* si_mac_clk */
+EXPORT_SYMBOL(si_mac_clk);
 
 /* Get chip's FVCO and PLLCTRL1 register value */
 extern int
@@ -6907,6 +6915,7 @@ si_pmu_switch_on_PARLDO(si_t *sih, osl_t *osh)
 		break;
 	}
 }
+EXPORT_SYMBOL(si_pmu_switch_on_PARLDO);
 
 /* For 43602a0 MCH2/MCH5 boards: power off PA Reference LDO */
 void
@@ -7060,6 +7069,7 @@ si_pmu_get_bb_vcofreq(si_t *sih, osl_t *osh, int xtalfreq)
 	vcofreq = xtal1 * ndiv_int + vcofrac;
 	return vcofreq;
 } /* si_pmu_get_bb_vcofreq */
+EXPORT_SYMBOL(si_pmu_get_bb_vcofreq);
 
 /* Enable PMU 1Mhz clock */
 static void
@@ -7728,6 +7738,7 @@ BCMINITFN(si_pmu_cpu_clock)(si_t *sih, osl_t *osh)
 
 	return clock;
 } /* si_pmu_cpu_clock */
+EXPORT_SYMBOL(si_pmu_cpu_clock);
 
 /** get memory clock frequency, which is the same as the HT clock for newer chips. Returns [Hz]. */
 uint32
@@ -8437,6 +8448,7 @@ si_pmu_rcal(si_t *sih, osl_t *osh)
 	/* Return to original core */
 	si_setcoreidx(sih, origidx);
 } /* si_pmu_rcal */
+EXPORT_SYMBOL(si_pmu_rcal);
 
 /** only called for HT, LCN and N phy's. */
 void
@@ -8497,6 +8509,7 @@ si_pmu_spuravoid(si_t *sih, osl_t *osh, uint8 spuravoid)
 	/* Return to original core */
 	si_restore_core(sih, origidx, intr_val);
 } /* si_pmu_spuravoid */
+EXPORT_SYMBOL(si_pmu_spuravoid);
 
 /* below function are only for BBPLL parallel purpose */
 /** only called for HT, LCN and N phy's. */
@@ -9281,6 +9294,7 @@ si_pmu_gband_spurwar(si_t *sih, osl_t *osh)
 		si_restore_core(sih, origidx, intr_val);
 	}
 } /* si_pmu_gband_spurwar */
+EXPORT_SYMBOL(si_pmu_gband_spurwar);
 
 bool
 si_pmu_is_otp_powered(si_t *sih, osl_t *osh)
@@ -9770,6 +9784,7 @@ BCMATTACHFN(si_pmu_chip_init)(si_t *sih, osl_t *osh)
 		break;
 	}
 } /* si_pmu_chip_init */
+EXPORT_SYMBOL(si_pmu_chip_init);
 
 void
 si_pmu_slow_clk_reinit(si_t *sih, osl_t *osh)
@@ -9846,6 +9861,7 @@ si_pmu_slow_clk_reinit(si_t *sih, osl_t *osh)
 	/* Return to original core */
 	si_setcoreidx(sih, origidx);
 }
+EXPORT_SYMBOL(si_pmu_slow_clk_reinit);
 
 /* 4345 Active Voltage supply settings */
 #define OTP4345_AVS_STATUS_OFFSET 0x14 /* offset in OTP for AVS status register */
@@ -10200,6 +10216,7 @@ si_pmu_radio_enable(si_t *sih, bool enable)
 		break;
 	}
 } /* si_pmu_radio_enable */
+EXPORT_SYMBOL(si_pmu_radio_enable);
 
 /** Wait for a particular clock level to be on the backplane */
 uint32

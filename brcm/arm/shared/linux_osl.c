@@ -167,6 +167,7 @@ struct pcmcia_dev {
 /* Global ASSERT type flag */
 uint32 g_assert_type = 0;
 module_param(g_assert_type, int, 0);
+EXPORT_SYMBOL(g_assert_type);
 
 static int16 linuxbcmerrormap[] =
 {	0, 			/* 0 */
@@ -246,6 +247,7 @@ osl_error(int bcmerror)
 	/* Array bounds covered by ASSERT in osl_attach */
 	return linuxbcmerrormap[-bcmerror];
 }
+EXPORT_SYMBOL(osl_error);
 #ifdef SHARED_OSL_CMN
 osl_t *
 osl_attach(void *pdev, uint bustype, bool pkttag, void **osl_cmn)
@@ -369,6 +371,7 @@ int osl_static_mem_init(osl_t *osh, void *adapter)
 
 	return 0;
 }
+EXPORT_SYMBOL(osl_attach);
 
 void osl_set_bus_handle(osl_t *osh, void *bus_handle)
 {
@@ -393,6 +396,8 @@ osl_detach(osl_t *osh)
 	}
 	kfree(osh);
 }
+
+EXPORT_SYMBOL(osl_detach);
 
 int osl_static_mem_deinit(osl_t *osh, void *adapter)
 {
@@ -737,6 +742,7 @@ osl_pkt_tonative(osl_t *osh, void *pkt)
 	}
 	return (struct sk_buff *)pkt;
 }
+EXPORT_SYMBOL(osl_pkt_tonative);
 
 /* Convert a native(OS) packet to driver packet.
  * In the process, native packet is destroyed, there is no copying
@@ -776,6 +782,7 @@ osl_pkt_frmnative(osl_t *osh, void *pkt)
 	}
 	return (void *)pkt;
 }
+EXPORT_SYMBOL(osl_pkt_frmnative);
 
 /* Return a new packet. zero out pkttag */
 #ifdef BCMDBG_CTRACE
@@ -811,6 +818,7 @@ osl_pktget(osl_t *osh, uint len)
 
 	return ((void*) skb);
 }
+EXPORT_SYMBOL(osl_pktget);
 
 #ifdef CTFPOOL
 static inline void
@@ -922,6 +930,8 @@ next_skb:
 		skb = nskb;
 	}
 }
+
+EXPORT_SYMBOL(osl_pktfree);
 
 #ifdef CONFIG_DHD_USE_STATIC_BUF
 void*
@@ -1131,6 +1141,7 @@ osl_pci_device(osl_t *osh)
 
 	return osh->pdev;
 }
+EXPORT_SYMBOL(osl_pci_device);
 
 static void
 osl_pcmcia_attr(osl_t *osh, uint offset, char *buf, int size, bool write)
@@ -1203,6 +1214,7 @@ original:
 
 	return (addr);
 }
+EXPORT_SYMBOL(osl_malloc);
 
 void *
 osl_mallocz(osl_t *osh, uint size)
@@ -1217,6 +1229,7 @@ osl_mallocz(osl_t *osh, uint size)
 
 	return ptr;
 }
+EXPORT_SYMBOL(osl_mallocz);
 
 void
 osl_mfree(osl_t *osh, void *addr, uint size)
@@ -1253,6 +1266,8 @@ osl_mfree(osl_t *osh, void *addr, uint size)
 	kfree(addr);
 }
 
+EXPORT_SYMBOL(osl_mfree);
+
 uint
 osl_check_memleak(osl_t *osh)
 {
@@ -1269,6 +1284,7 @@ osl_malloced(osl_t *osh)
 	ASSERT((osh && (osh->magic == OS_HANDLE_MAGIC)));
 	return (atomic_read(&osh->cmn->malloced));
 }
+EXPORT_SYMBOL(osl_malloced);
 
 uint
 osl_malloc_failed(osl_t *osh)
@@ -1396,6 +1412,7 @@ no_cache_ops:
 
 	return (pci_map_single(osh->pdev, va, size, dir));
 }
+EXPORT_SYMBOL(osl_dma_map);
 
 void BCMFASTPATH
 osl_dma_unmap(osl_t *osh, uint pa, uint size, int direction)
@@ -1489,6 +1506,7 @@ int osl_arch_is_coherent(void)
 	return arch_is_coherent();
 #endif
 }
+EXPORT_SYMBOL(osl_arch_is_coherent);
 
 
 inline int osl_acp_war_enab(void)
@@ -1499,6 +1517,7 @@ inline int osl_acp_war_enab(void)
 	return 0;
 #endif /* BCM47XX_CA9 */
 }
+EXPORT_SYMBOL(osl_acp_war_enab);
 
 #endif /* mips */
 
@@ -1514,6 +1533,7 @@ osl_delay(uint usec)
 		usec -= d;
 	}
 }
+EXPORT_SYMBOL(osl_delay);
 
 void
 osl_sleep(uint ms)
@@ -1648,6 +1668,7 @@ osl_pktdup(osl_t *osh, void *skb)
 #endif
 	return (p);
 }
+EXPORT_SYMBOL(osl_pktdup);
 
 #ifdef BCMDBG_CTRACE
 int osl_pkt_is_frmnative(osl_t *osh, struct sk_buff *pkt)
@@ -2096,6 +2117,7 @@ osl_pktalloced(osl_t *osh)
 	else
 		return 0;
 }
+EXPORT_SYMBOL(osl_pktalloced);
 
 uint32
 osl_rand(void)
@@ -2197,6 +2219,7 @@ inline void osl_pcie_rreg(osl_t *osh, ulong addr, void *v, uint size)
 	if (pci_access && ACP_WAR_ENAB())
 		spin_unlock_irqrestore(&l2x0_reg_lock, flags);
 }
+EXPORT_SYMBOL(osl_pcie_rreg);
 #endif /* BCM47XX_CA9 */
 
 /* APIs to set/get specific quirks in OSL layer */
@@ -2205,6 +2228,7 @@ osl_flag_set(osl_t *osh, uint32 mask)
 {
 	osh->flags |= mask;
 }
+EXPORT_SYMBOL(osl_flag_set);
 
 bool
 osl_is_flag_set(osl_t *osh, uint32 mask)

@@ -293,6 +293,7 @@ pktcopy(osl_t *osh, void *p, uint offset, int len, uchar *buf)
 
 	return ret;
 }
+EXPORT_SYMBOL(pktcopy);
 
 /* copy a buffer into a pkt buffer chain */
 uint
@@ -379,6 +380,7 @@ pkttotlen(osl_t *osh, void *p)
 
 	return (total);
 }
+EXPORT_SYMBOL(pkttotlen);
 
 /* return the last buffer of chained pkt */
 void *
@@ -389,6 +391,7 @@ pktlast(osl_t *osh, void *p)
 
 	return (p);
 }
+EXPORT_SYMBOL(pktlast);
 
 /* count segments of a chained packet */
 uint BCMFASTPATH BCMSPEEDOPT
@@ -409,6 +412,7 @@ pktsegcnt(osl_t *osh, void *p)
 
 	return cnt;
 }
+EXPORT_SYMBOL(pktsegcnt);
 
 /* count segments of a chained packet */
 uint BCMFASTPATH
@@ -439,6 +443,7 @@ pktsegcnt_war(osl_t *osh, void *p)
 
 	return cnt;
 }
+EXPORT_SYMBOL(pktsegcnt_war);
 
 uint8 * BCMFASTPATH
 pktdataoffset(osl_t *osh, void *p,  uint offset)
@@ -518,6 +523,7 @@ const unsigned char bcm_ctype[] = {
 	_BCM_L, _BCM_L, _BCM_L, _BCM_L, _BCM_L, _BCM_L, _BCM_L, _BCM_P, _BCM_L, _BCM_L, _BCM_L,
 	_BCM_L, _BCM_L, _BCM_L, _BCM_L, _BCM_L /* 240-255 */
 };
+EXPORT_SYMBOL(bcm_ctype);
 
 ulong
 bcm_strtoul(const char *cp, char **endp, uint base)
@@ -572,12 +578,14 @@ bcm_strtoul(const char *cp, char **endp, uint base)
 
 	return (result);
 }
+EXPORT_SYMBOL(bcm_strtoul);
 
 int
 bcm_atoi(const char *s)
 {
 	return (int)bcm_strtoul(s, NULL, 10);
 }
+EXPORT_SYMBOL(bcm_atoi);
 
 /* return pointer to location of substring 'needle' in 'haystack' */
 char *
@@ -597,6 +605,7 @@ bcmstrstr(const char *haystack, const char *needle)
 			return DISCARD_QUAL(&haystack[i], char);
 	return (NULL);
 }
+EXPORT_SYMBOL(bcmstrstr);
 
 char *
 bcmstrnstr(const char *s, uint s_len, const char *substr, uint substr_len)
@@ -805,6 +814,7 @@ bcm_ether_atoe(const char *p, struct ether_addr *ea)
 
 	return (i == 6);
 }
+EXPORT_SYMBOL(bcm_ether_atoe);
 
 int
 bcm_atoipv4(const char *p, struct ipv4_addr *ip)
@@ -893,6 +903,7 @@ bcm_ether_ntoa(const struct ether_addr *ea, char *buf)
 
 	return (buf);
 }
+EXPORT_SYMBOL(bcm_ether_ntoa);
 
 char *
 bcm_ip_ntoa(struct ipv4_addr *ia, char *buf)
@@ -901,6 +912,7 @@ bcm_ip_ntoa(struct ipv4_addr *ia, char *buf)
 	         ia->addr[0], ia->addr[1], ia->addr[2], ia->addr[3]);
 	return (buf);
 }
+EXPORT_SYMBOL(bcm_ip_ntoa);
 
 char *
 bcm_ipv6_ntoa(void *ipv6, char *buf)
@@ -975,6 +987,7 @@ getvar(char *vars, const char *name)
 	NVRAM_RECLAIM_CHECK(name);
 	return getvar_internal(vars, name);
 }
+EXPORT_SYMBOL(getvar);
 
 static char *
 #if defined(BCMROMBUILD) || defined(WLTEST) || !defined(WLC_HIGH) || defined(ATE_BUILD)
@@ -1020,6 +1033,7 @@ getintvar(char *vars, const char *name)
 	NVRAM_RECLAIM_CHECK(name);
 	return getintvar_internal(vars, name);
 }
+EXPORT_SYMBOL(getintvar);
 
 static int
 getintvar_internal(char *vars, const char *name)
@@ -1042,6 +1056,7 @@ getintvararray(char *vars, const char *name, int index)
 	NVRAM_RECLAIM_CHECK(name);
 	return getintvararray_internal(vars, name, index);
 }
+EXPORT_SYMBOL(getintvararray);
 
 static int
 getintvararray_internal(char *vars, const char *name, int index)
@@ -1079,6 +1094,7 @@ getintvararraysize(char *vars, const char *name)
 	NVRAM_RECLAIM_CHECK(name);
 	return getintvararraysize_internal(vars, name);
 }
+EXPORT_SYMBOL(getintvararraysize);
 
 static int
 getintvararraysize_internal(char *vars, const char *name)
@@ -1636,6 +1652,7 @@ pktsetprio(void *pkt, bool update_vtag)
 	PKTSETPRIO(pkt, priority);
 	return (rc | priority);
 }
+EXPORT_SYMBOL(pktsetprio);
 
 /* Returns TRUE and DSCP if IP header found, FALSE otherwise.
  */
@@ -1672,6 +1689,7 @@ pktgetdscp(uint8 *pktdata, uint pktlen, uint8 *dscp)
 
 	return rc;
 }
+EXPORT_SYMBOL(pktgetdscp);
 
 #ifndef BCM_BOOTLOADER
 /* The 0.5KB string table is not removed by compiler even though it's unused */
@@ -1695,6 +1713,7 @@ BCMRAMFN(bcmerrorstr)(int bcmerror)
 
 	return bcmerrorstrtable[-bcmerror];
 }
+EXPORT_SYMBOL(bcmerrorstr);
 
 #endif /* !BCM_BOOTLOADER */
 
@@ -1858,6 +1877,7 @@ bcm_iovar_lencheck(const bcm_iovar_t *vi, void *arg, int len, bool set)
 
 	return bcmerror;
 }
+EXPORT_SYMBOL(bcm_iovar_lencheck);
 
 #endif	/* BCMDRIVER */
 
@@ -1909,6 +1929,7 @@ bcm_write_tlv(int type, const void *data, int datalen, uint8 *dst)
 
 	return (new_dst);
 }
+EXPORT_SYMBOL(bcm_write_tlv);
 
 uint8 *
 bcm_write_tlv_safe(int type, const void *data, int datalen, uint8 *dst, int dst_maxlen)
@@ -1928,6 +1949,7 @@ bcm_write_tlv_safe(int type, const void *data, int datalen, uint8 *dst, int dst_
 
 	return (new_dst);
 }
+EXPORT_SYMBOL(bcm_write_tlv_safe);
 
 uint8 *
 bcm_copy_tlv(const void *src, uint8 *dst)
@@ -1946,6 +1968,7 @@ bcm_copy_tlv(const void *src, uint8 *dst)
 
 	return (new_dst);
 }
+EXPORT_SYMBOL(bcm_copy_tlv);
 
 
 uint8 *bcm_copy_tlv_safe(const void *src, uint8 *dst, int dst_maxlen)
@@ -1962,6 +1985,7 @@ uint8 *bcm_copy_tlv_safe(const void *src, uint8 *dst, int dst_maxlen)
 
 	return (new_dst);
 }
+EXPORT_SYMBOL(bcm_copy_tlv_safe);
 
 
 #if !defined(BCMROMOFFLOAD_EXCLUDE_BCMUTILS_FUNCS)
@@ -2222,6 +2246,7 @@ hndcrc32(uint8 *pdata, uint nbytes, uint32 crc)
 
 	return crc;
 }
+EXPORT_SYMBOL(hndcrc32);
 
 #ifdef notdef
 #define CLEN 	1499 	/*  CRC Length */
@@ -2289,6 +2314,7 @@ bcm_next_tlv(bcm_tlv_t *elt, int *buflen)
 
 	return elt;
 }
+EXPORT_SYMBOL(bcm_next_tlv);
 
 /*
  * Traverse a string of 1-byte tag/1-byte length/variable-length value
@@ -2320,6 +2346,7 @@ bcm_parse_tlvs(void *buf, int buflen, uint key)
 
 	return NULL;
 }
+EXPORT_SYMBOL(bcm_parse_tlvs);
 
 /*
  * Traverse a string of 1-byte tag/1-byte length/variable-length value
@@ -2505,6 +2532,7 @@ prhex(const char *msg, uchar *buf, uint nbytes)
 	if (p != line)
 		printf("%s\n", line);
 }
+EXPORT_SYMBOL(prhex);
 
 static const char *crypto_algo_names[] = {
 	"NONE",
@@ -2570,6 +2598,7 @@ bcm_brev_str(uint32 brev, char *buf)
 
 	return (buf);
 }
+EXPORT_SYMBOL(bcm_brev_str);
 
 #define BUFSIZE_TODUMP_ATONCE 512 /* Buffer size */
 
@@ -2644,6 +2673,7 @@ bcm_mkiovar(const char *name, char *data, uint datalen, char *buf, uint buflen)
 
 	return len;
 }
+EXPORT_SYMBOL(bcm_mkiovar);
 
 /* Quarter dBm units to mW
  * Table starts at QDBM_OFFSET, so the first entry is mW for qdBm=153
@@ -2698,6 +2728,7 @@ bcm_qdbm_to_mw(uint8 qdbm)
 	 */
 	return ((nqdBm_to_mW_map[idx] + factor/2) / factor);
 }
+EXPORT_SYMBOL(bcm_qdbm_to_mw);
 
 uint8
 bcm_mw_to_qdbm(uint16 mw)
@@ -2729,6 +2760,7 @@ bcm_mw_to_qdbm(uint16 mw)
 
 	return (qdbm);
 }
+EXPORT_SYMBOL(bcm_mw_to_qdbm);
 
 
 uint
@@ -2745,6 +2777,7 @@ bcm_bitcount(uint8 *bitmap, uint length)
 	}
 	return bitcount;
 }
+EXPORT_SYMBOL(bcm_bitcount);
 
 #ifdef BCMDRIVER
 
@@ -2755,6 +2788,8 @@ bcm_binit(struct bcmstrbuf *b, char *buf, uint size)
 	b->origsize = b->size = size;
 	b->origbuf = b->buf = buf;
 }
+
+EXPORT_SYMBOL(bcm_binit);
 
 /* Buffer sprintf wrapper to guard against buffer overflow */
 int
@@ -2785,6 +2820,7 @@ bcm_bprintf(struct bcmstrbuf *b, const char *fmt, ...)
 
 	return r;
 }
+EXPORT_SYMBOL(bcm_bprintf);
 
 void
 bcm_bprhex(struct bcmstrbuf *b, const char *msg, bool newline, const uint8 *buf, int len)
@@ -2873,6 +2909,7 @@ bcm_find_vendor_ie(void *tlvs, int tlvs_len, const char *voui, uint8 *type, int 
 
 	return NULL;
 }
+EXPORT_SYMBOL(bcm_find_vendor_ie);
 
 #if defined(WLTINYDUMP) || defined(BCMDBG) || defined(WLMSG_INFORM) || \
 	defined(WLMSG_ASSOC) || defined(WLMSG_PRPKT) || defined(WLMSG_WSEC)
@@ -3001,6 +3038,7 @@ bcm_uint64_multiple_add(uint32* r_high, uint32* r_low, uint32 a, uint32 b, uint3
 	*r_high = r1;
 	*r_low = r0;
 }
+EXPORT_SYMBOL(bcm_uint64_multiple_add);
 
 /* calculate a / b */
 void
@@ -3019,6 +3057,7 @@ bcm_uint64_divide(uint32* r, uint32 a_high, uint32 a_low, uint32 b)
 	r0 += a0 / b;
 	*r = r0;
 }
+EXPORT_SYMBOL(bcm_uint64_divide);
 
 #ifndef setbit /* As in the header file */
 #ifdef BCMUTILS_BIT_MACROS_USE_FUNCS
@@ -3846,6 +3885,7 @@ BCMRAMFN(valid_bcmerror)(int e)
 {
 	return ((e <= 0) && (e >= BCME_LAST));
 }
+EXPORT_SYMBOL(valid_bcmerror);
 
 #ifdef DEBUG_COUNTER
 #if (OSL_SYSUPTIME_SUPPORT == TRUE)

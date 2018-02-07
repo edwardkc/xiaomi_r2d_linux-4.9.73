@@ -2319,6 +2319,7 @@ srom_read(si_t *sih, uint bustype, void *curmap, osl_t *osh,
 
 	return 0;
 }
+EXPORT_SYMBOL(srom_read);
 
 #if defined(WLTEST) || defined(DHD_SPROM) || defined(BCMDBG)
 /** support only 16-bit word write into srom */
