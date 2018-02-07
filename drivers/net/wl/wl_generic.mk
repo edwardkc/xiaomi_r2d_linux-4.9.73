@@ -7,6 +7,7 @@
 # $Id: wl_generic.mk,v 1.10 2011-01-21 22:12:09 $
 #
 
+wl_suffix:=linux
 REBUILD_WL_MODULE=$(shell if [ -d "$(src)/$(SRCBASE_OFFSET)/wl/sys" -a "$(REUSE_PREBUILT_WL)" != "1" ]; then echo 1; else echo 0; fi)
 
 # If source directory (src/wl/sys) exists and REUSE_PREBUILT_WL is undefined, 
@@ -92,7 +93,7 @@ endif
     WL_OBJS := $(sort $(patsubst %.c,%.o,$(addprefix $(SRCBASE_OFFSET)/,$(patsubst src/%,%,$(WLFILES_SRC)))))
 
     # wl-objs is for linking to wl.o
-    $(TARGET)-objs := $(WLCONF_O) $(WL_OBJS)
+    $(TARGET)-objs := $(WLCONF_O) $(WL_OBJS) cpumask.o
     obj-$(CONFIG_WL) := $(TARGET).o
 
 else # SRCBASE/wl/sys doesn't exist
