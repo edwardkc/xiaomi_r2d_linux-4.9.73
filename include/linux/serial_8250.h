@@ -31,6 +31,9 @@ struct plat_serial8250_port {
 	unsigned char	hub6;
 	upf_t		flags;		/* UPF_* flags */
 	unsigned int	type;		/* If UPF_FIXED_TYPE */
+#ifdef CONFIG_BCM47XX
+	int		custom_divisor;
+#endif
 	unsigned int	(*serial_in)(struct uart_port *, int);
 	void		(*serial_out)(struct uart_port *, int, int);
 	void		(*set_termios)(struct uart_port *,
