@@ -24,7 +24,7 @@
 #include <linux/mtd/nand.h>
 #include <linux/romfs_fs.h>
 #include <linux/cramfs_fs.h>
-#include <linux/squashfs_fs.h>
+#include <../fs/squashfs/squashfs_fs.h>
 #endif
 
 #include <linux/memblock.h>
@@ -327,7 +327,7 @@ void __init bcm47xx_adjust_zones(unsigned long *size, unsigned long *hole)
 //#error IO_BASE_VA 
 //#endif
 
-void brcm_reset(char mode, const char *cmd)
+void brcm_reset(enum reboot_mode mode, const char *cmd)
 {
 #ifdef CONFIG_OUTER_CACHE_SYNC
 	outer_cache.sync = NULL;
