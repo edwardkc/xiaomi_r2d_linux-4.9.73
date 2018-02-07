@@ -244,11 +244,11 @@ struct soc_cca_gpio_irq_data {
 
 static void soc_cca_gpio_handle(void)
 {
-	uint32 mask = readl(SOC_CHIPCOMON_A_GPIOINTMASK_VA);
-	uint32 polarity = readl(SOC_CHIPCOMON_A_GPIOINTPOLARITY_VA);
-	uint32 input = readl(SOC_CHIPCOMON_A_GPIOINPUT_VA);
-	uint32 event = readl(SOC_CHIPCOMON_A_GPIOEVENT_VA);
-	uint32 eventmask = readl(SOC_CHIPCOMON_A_GPIOEVENTINTMASK_VA);
+	uint32 mask = readl((const volatile void __iomem *)SOC_CHIPCOMON_A_GPIOINTMASK_VA);
+	uint32 polarity = readl((const volatile void __iomem *)SOC_CHIPCOMON_A_GPIOINTPOLARITY_VA);
+	uint32 input = readl((const volatile void __iomem *)SOC_CHIPCOMON_A_GPIOINPUT_VA);
+	uint32 event = readl((const volatile void __iomem *)SOC_CHIPCOMON_A_GPIOEVENT_VA);
+	uint32 eventmask = readl((const volatile void __iomem *)SOC_CHIPCOMON_A_GPIOEVENTINTMASK_VA);
 	int gpio;
 
 	for (gpio = 0; gpio < IRQ_CCA_GPIO_N; ++gpio) {
@@ -264,7 +264,7 @@ static void soc_cca_gpio_handle(void)
 
 static void soc_cca_irq_handler(unsigned int irq, struct irq_desc *desc)
 {
-	uint32 status = readl(SOC_CHIPCOMON_A_INTSTATUS_VA);
+	uint32 status = readl((const volatile void __iomem *)SOC_CHIPCOMON_A_INTSTATUS_VA);
 
 	desc->chip->mask(irq);
 	desc->chip->ack(irq);
@@ -296,17 +296,17 @@ static void soc_cca_gpio_irq_update_type(unsigned int irq)
 	gpio_bit = (1 << gpio);
 
 	if (type & IRQ_TYPE_LEVEL_LOW) {
-		writel(readl(SOC_CHIPCOMON_A_GPIOINTPOLARITY_VA) | gpio_bit,
-			SOC_CHIPCOMON_A_GPIOINTPOLARITY_VA);
+		writel(readl((const volatile void __iomem *)SOC_CHIPCOMON_A_GPIOINTPOLARITY_VA) | gpio_bit,
+			(volatile void __iomem *)SOC_CHIPCOMON_A_GPIOINTPOLARITY_VA);
 	} else if (type & IRQ_TYPE_LEVEL_HIGH) {
-		writel(readl(SOC_CHIPCOMON_A_GPIOINTPOLARITY_VA) & ~gpio_bit,
-			SOC_CHIPCOMON_A_GPIOINTPOLARITY_VA);
+		writel(readl((const volatile void __iomem *)SOC_CHIPCOMON_A_GPIOINTPOLARITY_VA) & ~gpio_bit,
+			(volatile void __iomem *)SOC_CHIPCOMON_A_GPIOINTPOLARITY_VA);
 	} else if (type & IRQ_TYPE_EDGE_FALLING) {
-		writel(readl(SOC_CHIPCOMON_A_GPIOEVENTINTPOLARITY_VA) | gpio_bit,
-			SOC_CHIPCOMON_A_GPIOEVENTINTPOLARITY_VA);
+		writel(readl((const volatile void __iomem *)SOC_CHIPCOMON_A_GPIOEVENTINTPOLARITY_VA) | gpio_bit,
+			(volatile void __iomem *)SOC_CHIPCOMON_A_GPIOEVENTINTPOLARITY_VA);
 	} else if (type & IRQ_TYPE_EDGE_RISING) {
-		writel(readl(SOC_CHIPCOMON_A_GPIOEVENTINTPOLARITY_VA) & ~gpio_bit,
-			SOC_CHIPCOMON_A_GPIOEVENTINTPOLARITY_VA);
+		writel(readl((const volatile void __iomem *)SOC_CHIPCOMON_A_GPIOEVENTINTPOLARITY_VA) & ~gpio_bit,
+			(volatile void __iomem *)SOC_CHIPCOMON_A_GPIOEVENTINTPOLARITY_VA);
 	}
 }
 
@@ -318,7 +318,7 @@ static void soc_cca_gpio_irq_ack(unsigned int irq)
 		return;
 	}
 
-	writel((1 << gpio), SOC_CHIPCOMON_A_GPIOEVENT_VA);
+	writel((1 << gpio), (volatile void __iomem *)SOC_CHIPCOMON_A_GPIOEVENT_VA);
 }
 
 static void soc_cca_gpio_irq_maskunmask(unsigned int irq, bool mask)
@@ -342,13 +342,13 @@ static void soc_cca_gpio_irq_maskunmask(unsigned int irq, bool mask)
 		mask_addr = SOC_CHIPCOMON_A_GPIOINTMASK_VA;
 	}
 
-	val = readl(mask_addr);
+	val = readl((const volatile void __iomem *)mask_addr);
 	if (mask) {
 		val &= ~gpio_bit;
 	} else {
 		val |= gpio_bit;
 	}
-	writel(val, mask_addr);
+	writel(val, (volatile void __iomem *)mask_addr);
 }
 
 static void soc_cca_gpio_irq_mask(unsigned int irq)
@@ -450,8 +450,8 @@ static u32 __init soc_timerclk_calibration(void)
 	u32 timer_clk;
 
 	/* Enable XtalCntrEanble bit, bit[31] of PMU_XtalFreqRatio register */
-	writel(0x80000000, reg_base + PMU_XTALFREQ_RATIO_OFF);
-	val1 = readl(reg_base + PMU_XTALFREQ_RATIO_OFF) & 0x1fff;
+	writel(0x80000000, (volatile void __iomem *)(reg_base + PMU_XTALFREQ_RATIO_OFF));
+	val1 = readl((const volatile void __iomem *)(reg_base + PMU_XTALFREQ_RATIO_OFF)) & 0x1fff;
 
 	/*
 	 * Get some valid values of the field AlpPer4Ilp of the above register, and
@@ -459,7 +459,7 @@ static u32 __init soc_timerclk_calibration(void)
 	 */
 	while (val_num < 20) {
 		/* Check next valid value */
-		val2 = readl(reg_base + PMU_XTALFREQ_RATIO_OFF) & 0x1fff;
+		val2 = readl((const volatile void __iomem *)reg_base + PMU_XTALFREQ_RATIO_OFF) & 0x1fff;
 		if (val1 == val2) {
 			if (++loop_num > 5000) {
 				val_sum += val2;
@@ -475,7 +475,7 @@ static u32 __init soc_timerclk_calibration(void)
 	}
 
 	/* Disable XtalCntrEanble bit, bit[31] of PMU_XtalFreqRatio register */
-	writel(0x0, reg_base + PMU_XTALFREQ_RATIO_OFF);
+	writel(0x0, (volatile void __iomem *)(reg_base + PMU_XTALFREQ_RATIO_OFF));
 
 	val_sum /= val_num;
 	timer_clk = (si_alp_clock(sih) * 4) / val_sum;
@@ -520,20 +520,20 @@ static void __init soc_config_cca_uart_clock(void)
 #if defined(CONFIG_PLAT_CCA_UART_CLK_DEFAULT)
 	/* Do nothing. Use what already set. */
 #elif defined(CONFIG_PLAT_CCA_UART_CLK_INTERNAL_OVERRIDE)
-	writel(PLAT_SM_SET(readl(SOC_CHIPCOMON_A_CORECTRL), SOC_CHIPCOMON_A_CORECTRL_UARTCLKOVR, 1),
-		SOC_CHIPCOMON_A_CORECTRL);
+	writel(PLAT_SM_SET(readl((const volatile void __iomem *)SOC_CHIPCOMON_A_CORECTRL), SOC_CHIPCOMON_A_CORECTRL_UARTCLKOVR, 1),
+		(volatile void __iomem *)SOC_CHIPCOMON_A_CORECTRL);
 #elif defined(CONFIG_PLAT_CCA_UART_CLK_INTERNAL_DIVIDER)
-	writel(PLAT_SM_ASSIGN(readl(SOC_CHIPCOMON_A_CLKDIV), SOC_CHIPCOMON_A_CLKDIV_UARTCLKDIV, CONFIG_PLAT_CCA_UART_CLK_INTERNAL_DIVIDER_VAL),
-		SOC_CHIPCOMON_A_CLKDIV);
-	writel(PLAT_SM_CLR(readl(SOC_CHIPCOMON_A_CORECTRL), SOC_CHIPCOMON_A_CORECTRL_UARTCLKOVR),
-		SOC_CHIPCOMON_A_CORECTRL);
-	writel(PLAT_SM_SET(readl(SOC_APBX_IDM_IDM_IO_CONTROL_DIRECT), SOC_APBX_IDM_IDM_IO_CONTROL_DIRECT_UARTCLKSEL, 1),
-		SOC_APBX_IDM_IDM_IO_CONTROL_DIRECT);
+	writel(PLAT_SM_ASSIGN(readl((const volatile void __iomem *)SOC_CHIPCOMON_A_CLKDIV), SOC_CHIPCOMON_A_CLKDIV_UARTCLKDIV, CONFIG_PLAT_CCA_UART_CLK_INTERNAL_DIVIDER_VAL),
+		(volatile void __iomem *)SOC_CHIPCOMON_A_CLKDIV);
+	writel(PLAT_SM_CLR(readl((const volatile void __iomem *)SOC_CHIPCOMON_A_CORECTRL), SOC_CHIPCOMON_A_CORECTRL_UARTCLKOVR),
+		(volatile void __iomem *)SOC_CHIPCOMON_A_CORECTRL);
+	writel(PLAT_SM_SET(readl((const volatile void __iomem *)SOC_APBX_IDM_IDM_IO_CONTROL_DIRECT), SOC_APBX_IDM_IDM_IO_CONTROL_DIRECT_UARTCLKSEL, 1),
+		(volatile void __iomem *)SOC_APBX_IDM_IDM_IO_CONTROL_DIRECT);
 #elif defined(CONFIG_PLAT_CCA_UART_CLK_EXTERNAL)
-	writel(PLAT_SM_CLR(readl(SOC_CHIPCOMON_A_CORECTRL), SOC_CHIPCOMON_A_CORECTRL_UARTCLKOVR),
-		SOC_CHIPCOMON_A_CORECTRL);
-	writel(PLAT_SM_CLR(readl(SOC_APBX_IDM_IDM_IO_CONTROL_DIRECT), SOC_APBX_IDM_IDM_IO_CONTROL_DIRECT_UARTCLKSEL),
-		SOC_APBX_IDM_IDM_IO_CONTROL_DIRECT);
+	writel(PLAT_SM_CLR(readl((const volatile void __iomem *)SOC_CHIPCOMON_A_CORECTRL), SOC_CHIPCOMON_A_CORECTRL_UARTCLKOVR),
+		(volatile void __iomem *)SOC_CHIPCOMON_A_CORECTRL);
+	writel(PLAT_SM_CLR(readl((const volatile void __iomem *)SOC_APBX_IDM_IDM_IO_CONTROL_DIRECT), SOC_APBX_IDM_IDM_IO_CONTROL_DIRECT_UARTCLKSEL),
+		(volatile void __iomem *)SOC_APBX_IDM_IDM_IO_CONTROL_DIRECT);
 #endif
 }
 
@@ -542,9 +542,9 @@ static void __init soc_get_uart_clk_rate(u32 *clk_rate_cca, u32 *clk_rate_ccb)
 	struct clk *clk_ext = _soc_refclk;
 	struct clk *clk_int = NULL;
 	u32 clk_rate_int;
-	u32 UARTClkSel = PLAT_SM_GET(readl(SOC_CHIPCOMON_A_CORECAP), SOC_CHIPCOMON_A_CORECAP_UARTCLKSEL);
-	u32 UARTClkOvr = PLAT_SM_GET(readl(SOC_CHIPCOMON_A_CORECTRL), SOC_CHIPCOMON_A_CORECTRL_UARTCLKOVR);
-	u32 UARTClkDiv = PLAT_SM_GET(readl(SOC_CHIPCOMON_A_CLKDIV), SOC_CHIPCOMON_A_CLKDIV_UARTCLKDIV);
+	u32 UARTClkSel = PLAT_SM_GET(readl((const volatile void __iomem *)SOC_CHIPCOMON_A_CORECAP), SOC_CHIPCOMON_A_CORECAP_UARTCLKSEL);
+	u32 UARTClkOvr = PLAT_SM_GET(readl((const volatile void __iomem *)SOC_CHIPCOMON_A_CORECTRL), SOC_CHIPCOMON_A_CORECTRL_UARTCLKOVR);
+	u32 UARTClkDiv = PLAT_SM_GET(readl((const volatile void __iomem *)SOC_CHIPCOMON_A_CLKDIV), SOC_CHIPCOMON_A_CLKDIV_UARTCLKDIV);
 
 	BUG_ON(!clk_ext);
 	BUG_ON(UARTClkSel > 1);
@@ -645,15 +645,15 @@ void __init soc_add_devices( void )
 	}
 
 	/* Enable UART interrupt in ChipcommonA */
-	i = readl(SOC_CHIPCOMON_A_BASE_VA + 0x24);
+	i = readl((const volatile void __iomem *)(SOC_CHIPCOMON_A_BASE_VA + 0x24));
 	i |= SOC_CHIPCOMON_A_INTMASK_UART;
-	writel(i, SOC_CHIPCOMON_A_BASE_VA + 0x24);
+	writel(i, (volatile void __iomem *)(SOC_CHIPCOMON_A_BASE_VA + 0x24));
 
 #ifdef CONFIG_PLAT_CCA_GPIO_IRQ
 	/* Enable GPIO interrupts in ChipcommonA */
-	i = readl(SOC_CHIPCOMON_A_INTMASK_VA);
+	i = readl((const volatile void __iomem *)SOC_CHIPCOMON_A_INTMASK_VA);
 	i |= SOC_CHIPCOMON_A_INTMASK_GPIO;
-	writel(i, SOC_CHIPCOMON_A_INTMASK_VA);
+	writel(i, (volatile void __iomem *)SOC_CHIPCOMON_A_INTMASK_VA);
 #endif /* CONFIG_PLAT_CCA_GPIO_IRQ */
 
 }
@@ -676,7 +676,7 @@ void plat_wake_secondary_cpu( unsigned cpu, void (* _sec_entry_va)(void) )
 		return;
 	val = virt_to_phys( _sec_entry_va );
 
-	writel( val, rombase + offset );
+	writel( val, (volatile void __iomem *)(rombase + offset));
 
 	smp_wmb();	/* probably not needed - io regs are not cached */
 
@@ -749,7 +749,7 @@ static ssize_t chipinfo_read_proc(struct file *file, char __user *buf,
 
 	reg = SOC_CHIPCOMON_A_BASE_PA;
 	reg_map = ioremap_nocache(reg, 4);
-	val = readl(reg_map);
+	val = readl((const volatile void __iomem *)reg_map);
 	iounmap((void *)reg_map);
 
 	len += sprintf(&buffer[len], "ChipID: 0x%x\n", val & 0xffff);
@@ -764,14 +764,14 @@ static const struct file_operations chipinfo_fops = {
 	.llseek = default_llseek,
 };
 
-static void __init chipinfo_proc_init(void)
+static int __init chipinfo_proc_init(void)
 {
 	struct proc_dir_entry *chip_info;
 
 	chip_info = proc_create_data(BCM_CHIPINFO_PROC_NAME, 0, NULL, &chipinfo_fops, NULL);
 	if (!chip_info) {
 		printk(KERN_ERR "%s: Create proc entry failed.\n", __FUNCTION__);
-		return;
+		return 0;
 	}
 }
 
