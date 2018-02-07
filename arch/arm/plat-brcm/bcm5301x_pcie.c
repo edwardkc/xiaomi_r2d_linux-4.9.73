@@ -89,7 +89,11 @@ extern spinlock_t bcm947xx_sih_lock;
 
 extern int _memsize;
 
+#ifdef PCI_MAX_BUS
+#undef PCI_MAX_BUS
 #define PCI_MAX_BUS		4
+#endif
+
 #define PLX_PRIM_SEC_BUS_NUM		(0x00000201 | (PCI_MAX_BUS << 16))
 
 #define PLX_SWITCH_ID		0x8603
