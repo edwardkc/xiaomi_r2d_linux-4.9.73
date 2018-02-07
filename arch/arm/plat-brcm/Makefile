@@ -1,4 +1,4 @@
-EXTRA_CFLAGS+=-I$(srctree)/brcm/arm/include -I$(srctree)/brcm/arm/shared/bcmwifi/include -DBCMDRIVER -Dlinux
+EXTRA_CFLAGS+=-I$(srctree)/brcm/arm/include -I$(srctree)/brcm/arm/shared/bcmwifi/include -DBCMDRIVER -Dlinux -DWLC_LOW=1
 EXTRA_AFLAGS+=-I$(srctree)/brcm/arm/include -I$(srctree)/brcm/arm/shared/bcmwifi/include -DBCMDRIVER -Dlinux
 
 
@@ -30,4 +30,17 @@ obj-$(CONFIG_PLAT_BCM5301X) += $(addprefix $(SHARED)/, nandcore.o)
 obj-$(CONFIG_PLAT_BCM5301X) += $(addprefix $(SHARED)/, hndnand.o)
 obj-$(CONFIG_PLAT_BCM5301X) += $(addprefix $(SHARED)/, linux_gpio.o)
 obj-$(CONFIG_PLAT_BCM5301X) += $(addprefix $(SHARED)/, ccsflash.o)
+#Edward: Extra Requirements
+obj-$(CONFIG_PLAT_BCM5301X) += $(addprefix $(SHARED)/, siutils.o)
+obj-$(CONFIG_PLAT_BCM5301X) += $(addprefix $(SHARED)/, linux_osl.o)
+obj-$(CONFIG_PLAT_BCM5301X) += $(addprefix $(SHARED)/, hndpmu.o)
+obj-$(CONFIG_PLAT_BCM5301X) += $(addprefix $(SHARED)/, bcmutils.o)
+obj-$(CONFIG_PLAT_BCM5301X) += $(addprefix $(SHARED)/, nicpci.o)
+obj-$(CONFIG_PLAT_BCM5301X) += $(addprefix $(SHARED)/, aiutils.o)
+obj-$(CONFIG_PLAT_BCM5301X) += $(addprefix $(SHARED)/, sbutils.o)
+obj-$(CONFIG_PLAT_BCM5301X) += $(addprefix $(SHARED)/, pcie_core.o)
+obj-$(CONFIG_PLAT_BCM5301X) += $(addprefix $(SHARED)/, bcmsrom.o)
+obj-$(CONFIG_PLAT_BCM5301X) += $(addprefix $(SHARED)/, bcmotp.o)
+obj-$(CONFIG_PLAT_BCM5301X) += $(addprefix $(SHARED)/, hnd_pktq.o)
+obj-$(CONFIG_PLAT_BCM5301X) += $(addprefix $(SHARED)/, hnddma.o)
 obj-$(CONFIG_CACHE_L310) += cache-l310.o
